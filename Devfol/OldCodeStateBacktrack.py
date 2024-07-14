@@ -48,7 +48,7 @@ def SAW_D_dim(D, pol_length):
     #print(track_list_dim)
 
 
-SAW_D_dim(1, 20) # Da der Walk nicht zurück kann, ist bei unendlicher Polymerlänge und einer Dimension Obacht zu geben
+SAW_D_dim(5, 20) # Da der Walk nicht zurück kann, ist bei unendlicher Polymerlänge und einer Dimension Obacht zu geben
 # TODO: TODOS.append("Fix infinite while-loop for one dimension")
 
 ### TODOS
