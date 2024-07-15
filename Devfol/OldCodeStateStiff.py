@@ -41,6 +41,7 @@ def SAW_D_dim(D, pol_length, lin_stiff):
 
     # Walken
     while True:
+
         if lin_stiff == "None":
             rand_int = random.randint(0, D-1)
             track_list_dim.append(rand_int)
@@ -53,8 +54,9 @@ def SAW_D_dim(D, pol_length, lin_stiff):
                 part_rand_dir = random.choice([-1, 1]) # Hier aber random direction
             track_list_dir.append(part_rand_dir)
             point_latest[rand_int] += part_rand_dir
+
         else:
-            y_n = random.random()
+            y_n = round(random.random(), 2)
             # Bei 0.01-0.99
             if steps > 0 and y_n < lin_stiff:
                 # Walk geht in gleicher Richtung weiter
@@ -107,7 +109,7 @@ def SAW_D_dim(D, pol_length, lin_stiff):
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
  #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
-SAW_D_dim(5, 20, 1) 
+SAW_D_dim(5, 20, 0.99) 
 # SAW_D_dim(D: int, pol_length: (int, str), lin_stiff: (float, str))
     ## pol_length: "inf" ## lin_stiff: "None"
 
