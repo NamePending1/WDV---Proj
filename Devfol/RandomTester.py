@@ -1,4 +1,3 @@
-
 import random
 
 hans = round(random.random(), 2)
