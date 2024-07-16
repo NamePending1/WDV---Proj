@@ -1,17 +1,18 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-mu = 6
-sigma = 2
+def Rnd_Pol(mean, std_dev, num):
 
-def gauschs(sigma, mu, x):
-    return 500 * (1 / np.sqrt(2 * np.pi * sigma**2) * (np.e ** (-0.5 * (((x - mu)/ sigma) ** 2))))
+    normal_floats = np.random.normal(mean, std_dev, num)
+    normal_integers = np.round(normal_floats).astype(int)
+    abs_integers = abs(normal_integers)
+    normal_integers_list = abs_integers.tolist()
+    print(normal_integers_list)
 
+    return normal_integers_list
 
-xval = np.linspace(0, 150, 1000)
-yval = gauschs(5, 50, xval)
+mean = 0       # Mean of the distribution
+std_dev = 1    # Standard deviation of the distribution
+num = 1000    # Number of samples
 
-plt.plot(xval, yval, linestyle='-', color='red')
-#plt.ylim(0, 0.11)
-#plt.xlim(-100, 100)
-plt.show()
+Rnd_Pol(40, 1.5, 400)
