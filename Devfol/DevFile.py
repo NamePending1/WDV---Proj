@@ -123,11 +123,14 @@ def Rnd_Pol(mean, std_dev, num):
 
     return normal_integers_list
 
-def PolyCallSimple(D, pol_length, lin_stiff, itter):
+def PolyCallSimple(D, pol_length, lin_stiff, itter, dist):
     ree_list = []
     length_list = []
     for i in range(itter):
-        pol_length = polymer_lengths[i]
+        if dist == True:
+            pol_length = polymer_lengths[i]
+        else:
+            pass
         ree, length = SAW_D_dim(D, pol_length, lin_stiff)
         if ree is not None and length is not None:
             ree_list.append(ree)
@@ -166,10 +169,10 @@ def PolyCallSimple(D, pol_length, lin_stiff, itter):
 imp_size = 400
 polymer_lengths = Rnd_Pol(20, 1.5, imp_size)
 # Rnd_Pol(mean: float, std_dev: float, num: int) -> list:
-PolyCallSimple(5, polymer_lengths, 0.8, imp_size) 
+#PolyCallSimple(5, polymer_lengths, 0.8, imp_size, True) 
 #\\\\////#
 
-#PolyCallSimple(5, "inf", 0.8, 400) # Argument vier entspricht der Anzahl an Itterationen -> dtype: int, die drei ersten sind identisch zum Einfachen Walk #<------------------------------
+PolyCallSimple(5, "inf", "None", 400, False) # Argument vier entspricht der Anzahl an Itterationen -> dtype: int, die drei ersten sind identisch zum Einfachen Walk #<------------------------------
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
  #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
