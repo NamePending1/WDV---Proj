@@ -114,32 +114,26 @@ def SAW_D_dim(D, pol_length, lin_stiff):
     return calced_REE, imp_length
 
 def PolyCallSimple(D, pol_length, lin_stiff, itter):
-    ree_list = []
-    length_list = []
+    stat_list = []
     for i in range(itter):
-        ree, length = SAW_D_dim(D, pol_length, lin_stiff)
-        if ree is not None and length is not None:
-            ree_list.append(ree)
-            length_list.append(length)
-    # REE
-    mean_ree = np.mean(ree_list)
-    std_dev_ree = np.std(ree_list)
-    median_ree = np.median(ree_list)
-    # Walklänge
-    mean_length = np.mean(length_list)
-    std_dev_length = np.std(length_list)
-    median_length = np.median(length_list)
-    print(f"REE - Mittelwert: {mean_ree}, Standardabweichung: {std_dev_ree}, Median: {median_ree}")
-    print(f"Walklänge - Mittelwert: {mean_length}, Standardabweichung: {std_dev_length}, Median: {median_length}")
+        result = SAW_D_dim(D, pol_length, lin_stiff)
+        if result is not None:
+            stat_list.append(result)
 
-    fig, axs = plt.subplots(1, 2, figsize=(14, 5))
-    axs[0].hist(ree_list, bins=10, edgecolor='black')
-    axs[0].set_xlabel('REE')
-    axs[0].set_ylabel('Anzahl')
-    axs[1].hist(length_list, bins=10, edgecolor='black')
-    axs[1].set_xlabel('Walklänge')
-    axs[1].set_ylabel('Anzahl')
+    # Calculate statistics
+    mean_val = np.mean(stat_list)
+    std_dev = np.std(stat_list)
+    median_val = np.median(stat_list)
 
+    # Print statistics
+    print(f"Mean: {mean_val}")
+    print(f"Standard Deviation: {std_dev}")
+    print(f"Median: {median_val}")
+
+    # Plot histogram
+    plt.hist(stat_list, bins=10, edgecolor='black')
+    plt.xlabel('REE')
+    plt.ylabel('Frequency')
     plt.show()
     
 
@@ -151,7 +145,7 @@ def PolyCallSimple(D, pol_length, lin_stiff, itter):
 # SAW_D_dim(D: int, pol_length: (int, str), lin_stiff: (float, str))
     ## pol_length: "inf" ## lin_stiff: "None"
 
-PolyCallSimple(5, "inf", 0.8, 400) # Argument vier entspricht der Anzahl an Itterationen -> dtype: int, die drei ersten sind identisch zum Einfachen Walk
+PolyCallSimple(3, 20, "None", 300) # Argument vier entspricht der Anzahl an Itterationen -> dtype: int, die drei ersten sind identisch zum Einfachen Walk
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
  #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-

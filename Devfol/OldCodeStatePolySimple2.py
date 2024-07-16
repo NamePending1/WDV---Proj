@@ -181,4 +181,3 @@ PolyCallSimple(5, "inf", 0.8, 400) # Argument vier entspricht der Anzahl an Itte
         ### Lineare Steifigkeit für Walks (Funktionsvariable)
         ### Loops über Funktion für Statistik
         ## Histogramme und Plots für die Statistik
-
