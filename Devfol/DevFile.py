@@ -162,6 +162,7 @@ PolyCallSimple(5, "inf", 0.8, 400) # Argument vier entspricht der Anzahl an Itte
     ### Wichtig
 
         ##### D-Dimentional Walk
+            ### Dimensionsvergleiche und Steifigkeitsverglieche bei sonst gleichen Argumenten
             ## Warscheinlichkeitsverteilte Polymerlängen im Funktionsloop
         ##### Diamondlattice walk
             ### 3d Diamantgitter

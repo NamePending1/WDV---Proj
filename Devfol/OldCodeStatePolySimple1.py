@@ -105,13 +105,13 @@ def SAW_D_dim(D, pol_length, lin_stiff):
 
     # Für Experiment mit unterschiedlichen Nucleationsites nicht geeignet
     calced_REE = np.linalg.norm(point_latest)
-    #print(track_list)
-    #print(calced_REE)
+    print(track_list)
+    print(calced_REE)
     imp_length = len(track_list)
-    #print(imp_length)
+    print(imp_length)
     #print(track_list_dir)
     #print(track_list_dim)
-    return calced_REE, imp_length
+    return calced_REE
 
 def PolyCallSimple(D, pol_length, lin_stiff, itter):
     stat_list = []
@@ -120,20 +120,17 @@ def PolyCallSimple(D, pol_length, lin_stiff, itter):
         if result is not None:
             stat_list.append(result)
 
-    # Calculate statistics
     mean_val = np.mean(stat_list)
     std_dev = np.std(stat_list)
     median_val = np.median(stat_list)
-
-    # Print statistics
     print(f"Mean: {mean_val}")
     print(f"Standard Deviation: {std_dev}")
     print(f"Median: {median_val}")
 
-    # Plot histogram
-    plt.hist(stat_list, bins=10, edgecolor='black')
-    plt.xlabel('REE')
-    plt.ylabel('Frequency')
+    plt.hist(stat_list, bins=10)
+    plt.xlabel("REE")
+    plt.ylabel("Frequency")
+
     plt.show()
     
 
@@ -141,11 +138,11 @@ def PolyCallSimple(D, pol_length, lin_stiff, itter):
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
  #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
-#SAW_D_dim(5, 20, 1) 
+#SAW_D_dim(1, 2, "None") 
 # SAW_D_dim(D: int, pol_length: (int, str), lin_stiff: (float, str))
     ## pol_length: "inf" ## lin_stiff: "None"
 
-PolyCallSimple(3, 20, "None", 300) # Argument vier entspricht der Anzahl an Itterationen -> dtype: int, die drei ersten sind identisch zum Einfachen Walk
+PolyCallSimple(1, 2, "None", 300) # Argument vier entspricht der Anzahl an Itterationen -> dtype: int, die drei ersten sind identisch zum Einfachen Walk
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
  #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-

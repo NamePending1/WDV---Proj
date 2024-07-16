@@ -129,16 +129,16 @@ def PolyCallSimple(D, pol_length, lin_stiff, itter):
     mean_length = np.mean(length_list)
     std_dev_length = np.std(length_list)
     median_length = np.median(length_list)
-    print(f"REE - Mittelwert: {mean_ree}, Standardabweichung: {std_dev_ree}, Median: {median_ree}")
-    print(f"Walklänge - Mittelwert: {mean_length}, Standardabweichung: {std_dev_length}, Median: {median_length}")
+    print(f"REE - Mittelwert/Durchschnitt: {mean_ree}, Standardabweichung: {std_dev_ree}, Median: {median_ree}")
+    print(f"Walklänge - Mittelwert/Durchschnitt: {mean_length}, Standardabweichung: {std_dev_length}, Median: {median_length}")
 
     fig, axs = plt.subplots(1, 2, figsize=(14, 5))
-    axs[0].hist(ree_list, bins=10, edgecolor='black')
-    axs[0].set_xlabel('REE')
-    axs[0].set_ylabel('Anzahl')
-    axs[1].hist(length_list, bins=10, edgecolor='black')
-    axs[1].set_xlabel('Walklänge')
-    axs[1].set_ylabel('Anzahl')
+    axs[0].hist(ree_list, bins=10, edgecolor="black")
+    axs[0].set_xlabel("REE")
+    axs[0].set_ylabel("Anzahl")
+    axs[1].hist(length_list, bins=15, edgecolor="black")
+    axs[1].set_xlabel("Walklänge")
+    axs[1].set_ylabel("Anzahl")
 
     plt.show()
     
@@ -151,7 +151,7 @@ def PolyCallSimple(D, pol_length, lin_stiff, itter):
 # SAW_D_dim(D: int, pol_length: (int, str), lin_stiff: (float, str))
     ## pol_length: "inf" ## lin_stiff: "None"
 
-PolyCallSimple(5, "inf", 0.8, 400) # Argument vier entspricht der Anzahl an Itterationen -> dtype: int, die drei ersten sind identisch zum Einfachen Walk
+PolyCallSimple(4, "inf", "None", 50000) # Argument vier entspricht der Anzahl an Itterationen -> dtype: int, die drei ersten sind identisch zum Einfachen Walk
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
  #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
