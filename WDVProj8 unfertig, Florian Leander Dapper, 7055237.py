@@ -1,3 +1,12 @@
+
+
+#### WDV-1 Projekt
+#### Florian Leander Dapper, 7055237
+#### SoSe 2024
+
+## Projektaufgabe 8: Self Avoiding Walk in D-Dimensionen und(oder?) Diamantgitter
+### Unfertiger Code
+
 import random
 import numpy as np
 import matplotlib.pyplot as plt
