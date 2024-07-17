@@ -14,7 +14,7 @@ itter = 50
 #####################################################
 #####################################################
 
-def SAW_D_dim(D, pol_length, lin_stiff):
+def SAW_D_dim(D: int, pol_length: int, lin_stiff: float):
     # Listen initiieren
     point_latest = [0] * D
     track_list = []
@@ -117,7 +117,7 @@ def SAW_D_dim(D, pol_length, lin_stiff):
     return calced_REE, imp_length
 
 # Normalverteilte Polymerlängen
-def Rnd_Pol(mean, std_dev, num):
+def Rnd_Pol(mean: float, std_dev: float, num: int):
     
     normal_floats = np.random.normal(mean, std_dev, num)
     normal_integers = np.round(normal_floats).astype(int)
@@ -126,7 +126,20 @@ def Rnd_Pol(mean, std_dev, num):
 
     return normal_integers_list
 
-def PolyCallSimple(D, pol_length, lin_stiff, itter, dist):
+# Vergleich von 10 Walks in unterschiedlichen Dimensionen
+def Deca_Comp_DIM(D_Start: int, pol_length, lin_stiff: float, itter: int, dist: bool):
+    if D_Start == 0:
+        print("Minimaler Wert für Dimensionen ist 1")
+        return
+    d_comp_list = [i for i in range(D_Start, D_Start + 10)]
+    comp_list_return = [0] * 10
+    for i in d_comp_list:
+        comp_list_return[i] = PolyCallSimple(d_comp_list[i], pol_length, lin_stiff, itter, dist)
+
+    print(d_comp_list)
+
+# Statistik bei festen Werten
+def PolyCallSimple(D: int, pol_length, lin_stiff: float, itter: int, dist: bool):
     ree_list = []
     length_list = []
     for i in range(itter):
@@ -168,9 +181,11 @@ def PolyCallSimple(D, pol_length, lin_stiff, itter, dist):
 # Grundsätzlich geht auch mehrfache Ausführung aber ist hauptsächlich aufgrund von Rechenaufwand nicht empfohlen
 # True = Ausführen, False = Nicht Ausführen
 Einzel_D_DIM = True # Muss für die Multi_Calls auf True sein
-Multi_D_DIM = False                  ##
-Multi_Vergleich_D_DIM_DIM = False      ## Hier nur eine der drei ausführen
-Multi_Vergleich_D_DIM_STIFF = False   ## 
+Multi_D_DIM = False # Muss für Vergleiche auf True sein
+
+Multi_Vergleich_D_DIM_DIM = False      ## 
+Multi_Vergleich_D_DIM_STIFF = False   ## Hier nur eine der zwei ausführen
+
 
 Einzel_Diamant = False # Gleiches wie oben
 Multi_Diamant = False
@@ -181,7 +196,7 @@ SAW_D_dim = lambda *args, **kwargs: None if not Einzel_D_DIM else original_SAW_D
 PolyCallSimple = lambda *args, **kwargs: None if not Multi_D_DIM else original_PolyCallSimple(*args, **kwargs)
 
 # Einzel_D_DIM
-SAW_D_dim(5, 20, 1)
+SAW_D_dim(5, 20, 1) # Bei lin_stiff > 1 passiert das gleiche wie bei lin_stiff == 1
 # SAW_D_dim(D: int, pol_length: (int, str), lin_stiff: (float, str))
     ## pol_length: "inf" ## lin_stiff: "None"
 
@@ -193,6 +208,10 @@ polymer_lengths = Rnd_Pol(65, 2.5, imp_size)
 # Ex: PolyCallSimple(5, polymer_lengths, 0.8, imp_size, True) 
 #\\\\////#
 PolyCallSimple(3, "inf", "None", 400, True) # Argument vier entspricht der Anzahl an Itterationen -> dtype: int, Argument 5 fragt ob die maximalen Polymerlängen gleich oder Normalverteilt sein sollen, die drei ersten sind identisch zum Einfachen Walk
+# PolyCallSimple(D: int, pol_length, lin_stiff: float, itter: int, dist: bool)
+
+Deca_Comp_DIM() # Itterationen werden hier praktisch mit 10 multipliziert
+#Deca_Comp_DIM(D_Start: int, pol_length, lin_stiff: float, itter: int, dist: bool)
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
  #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
