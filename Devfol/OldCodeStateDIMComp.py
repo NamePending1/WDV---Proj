@@ -178,28 +178,28 @@ def Deca_Comp_DIM(D_Start, pol_length, lin_stiff, itter, dist):
         comp_list_return_length.append(length)
     
     fig_ree, axs_ree = plt.subplots(2, 5, figsize=(20, 10))
-    fig_ree.suptitle("Vergleich REE")
+    fig_ree.suptitle('REE Values Comparison')
     for i in range(2):
         for j in range(5):
-            matrix_index = i * 5 + j
-            axs_ree[i, j].hist(comp_list_return_ree[matrix_index], bins=10, edgecolor="black")
-            axs_ree[i, j].set_title(f"D = {d_comp_list[matrix_index]}")
-            axs_ree[i, j].set_xlabel("REE")
-            axs_ree[i, j].set_ylabel("Anzahl")
-    plt.tight_layout()
+            idx = i * 5 + j
+            axs_ree[i, j].hist(comp_list_return_ree[idx], bins=10, edgecolor='black')
+            axs_ree[i, j].set_title(f'D = {d_comp_list[idx]}')
+            axs_ree[i, j].set_xlabel('REE')
+            axs_ree[i, j].set_ylabel('Count')
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.show()
 
     # Plotting Length values
     fig_length, axs_length = plt.subplots(2, 5, figsize=(20, 10))
-    fig_length.suptitle("Vergleich Längen")
+    fig_length.suptitle('Length Values Comparison')
     for i in range(2):
         for j in range(5):
-            matrix_index = i * 5 + j
-            axs_length[i, j].hist(comp_list_return_length[matrix_index], bins=10, edgecolor="black")
-            axs_length[i, j].set_title(f"D = {d_comp_list[matrix_index]}")
-            axs_length[i, j].set_xlabel("Walklänge")
-            axs_length[i, j].set_ylabel("Anzahl")
-    plt.tight_layout()
+            idx = i * 5 + j
+            axs_length[i, j].hist(comp_list_return_length[idx], bins=10, edgecolor='black')
+            axs_length[i, j].set_title(f'D = {d_comp_list[idx]}')
+            axs_length[i, j].set_xlabel('Length')
+            axs_length[i, j].set_ylabel('Count')
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.show()
     
 

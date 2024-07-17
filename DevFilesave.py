@@ -109,7 +109,7 @@ def SAW_D_dim(D, pol_length, lin_stiff):
     calced_REE = np.linalg.norm(point_latest)
     # Bei Poly_Call auskommentieren der prints empfohlen.
     #print(track_list)
-    #print(f"REE: {calced_REE}")
+    print(f"REE: {calced_REE}")
     imp_length = len(track_list)
     #print(f"Walklänge: {imp_length}")
     #print(track_list_dir)
@@ -125,6 +125,19 @@ def Rnd_Pol(mean, std_dev, num):
     normal_integers_list = abs_integers.tolist()
 
     return normal_integers_list
+
+# Vergleich von 10 Walks in unterschiedlichen Dimensionen
+def Deca_Comp_DIM(D_Start, pol_length, lin_stiff, itter, dist):
+    if D_Start <= 1:
+        print("Minimaler Wert für Dimensionen ist 2")
+        return
+    d_comp_list = [i for i in range(D_Start, D_Start + 10)]
+    comp_list_return_ree = [0] * 10
+    comp_list_return_length = [0] * 10
+    for i in d_comp_list:
+        comp_list_return_ree[i], comp_list_return_length[i] = PolyCallSimple(d_comp_list[i], pol_length, lin_stiff, itter, dist)
+
+    print(d_comp_list)
 
 # Statistik bei festen Werten
 def PolyCallSimple(D: int, pol_length, lin_stiff: float, itter: int, dist: bool):
@@ -147,60 +160,20 @@ def PolyCallSimple(D: int, pol_length, lin_stiff: float, itter: int, dist: bool)
     mean_length = np.mean(length_list)
     std_dev_length = np.std(length_list)
     median_length = np.median(length_list)
-    # Für Comps auskommentieren
-    #print(f"REE - Mittelwert: {mean_ree}, Standardabweichung: {std_dev_ree}, Median: {median_ree}")
-    #print(f"Walklänge - Mittelwert: {mean_length}, Standardabweichung: {std_dev_length}, Median: {median_length}")
+    print(f"REE - Mittelwert: {mean_ree}, Standardabweichung: {std_dev_ree}, Median: {median_ree}")
+    print(f"Walklänge - Mittelwert: {mean_length}, Standardabweichung: {std_dev_length}, Median: {median_length}")
 
-    # Für Comps auskommentieren
-    #fig, axs = plt.subplots(1, 2, figsize=(14, 5))
-    #axs[0].hist(ree_list, bins=10, edgecolor='black')
-    #axs[0].set_xlabel('REE')
-    #axs[0].set_ylabel('Anzahl')
-    #axs[1].hist(length_list, bins=10, edgecolor='black')
-    #axs[1].set_xlabel('Walklänge')
-    #axs[1].set_ylabel('Anzahl')
+    fig, axs = plt.subplots(1, 2, figsize=(14, 5))
+    axs[0].hist(ree_list, bins=10, edgecolor='black')
+    axs[0].set_xlabel('REE')
+    axs[0].set_ylabel('Anzahl')
+    axs[1].hist(length_list, bins=10, edgecolor='black')
+    axs[1].set_xlabel('Walklänge')
+    axs[1].set_ylabel('Anzahl')
 
-    #plt.show()
+    plt.show()
 
     return ree_list, length_list
-
-# Vergleich von 10 Walks in unterschiedlichen Dimensionen
-def Deca_Comp_DIM(D_Start, pol_length, lin_stiff, itter, dist):
-    if D_Start <= 1:
-        print("Minimaler Wert für Dimensionen ist 2")
-        return
-    d_comp_list = [i for i in range(D_Start, D_Start + 10)]
-    comp_list_return_ree = []
-    comp_list_return_length = []
-    for D in d_comp_list:
-        ree, length = PolyCallSimple(D, pol_length, lin_stiff, itter, dist)
-        comp_list_return_ree.append(ree)
-        comp_list_return_length.append(length)
-    
-    fig_ree, axs_ree = plt.subplots(2, 5, figsize=(20, 10))
-    fig_ree.suptitle("Vergleich REE")
-    for i in range(2):
-        for j in range(5):
-            matrix_index = i * 5 + j
-            axs_ree[i, j].hist(comp_list_return_ree[matrix_index], bins=10, edgecolor="black")
-            axs_ree[i, j].set_title(f"D = {d_comp_list[matrix_index]}")
-            axs_ree[i, j].set_xlabel("REE")
-            axs_ree[i, j].set_ylabel("Anzahl")
-    plt.tight_layout()
-    plt.show()
-
-    # Plotting Length values
-    fig_length, axs_length = plt.subplots(2, 5, figsize=(20, 10))
-    fig_length.suptitle("Vergleich Längen")
-    for i in range(2):
-        for j in range(5):
-            matrix_index = i * 5 + j
-            axs_length[i, j].hist(comp_list_return_length[matrix_index], bins=10, edgecolor="black")
-            axs_length[i, j].set_title(f"D = {d_comp_list[matrix_index]}")
-            axs_length[i, j].set_xlabel("Walklänge")
-            axs_length[i, j].set_ylabel("Anzahl")
-    plt.tight_layout()
-    plt.show()
     
 
 # Manuelles Callen der Funktionen
@@ -211,9 +184,9 @@ def Deca_Comp_DIM(D_Start, pol_length, lin_stiff, itter, dist):
 # Grundsätzlich geht auch mehrfache Ausführung aber ist hauptsächlich aufgrund von Rechenaufwand nicht empfohlen
 # True = Ausführen, False = Nicht Ausführen
 Einzel_D_DIM = True # Muss für die Multi_Calls auf True sein
-Multi_D_DIM = True # Muss für Vergleiche auf True sein
+Multi_D_DIM = False # Muss für Vergleiche auf True sein
 
-Multi_Vergleich_D_DIM_DIM = True      ## 
+Multi_Vergleich_D_DIM_DIM = False      ## 
 Multi_Vergleich_D_DIM_STIFF = False   ## Hier nur eine der zwei ausführen
 
 
@@ -222,10 +195,8 @@ Multi_Diamant = False
 
 original_SAW_D_dim = SAW_D_dim
 original_PolyCallSimple = PolyCallSimple
-original_Deca_Comp_DIM = Deca_Comp_DIM
 SAW_D_dim = lambda *args, **kwargs: None if not Einzel_D_DIM else original_SAW_D_dim(*args, **kwargs)
 PolyCallSimple = lambda *args, **kwargs: None if not Multi_D_DIM else original_PolyCallSimple(*args, **kwargs)
-Deca_Comp_DIM = lambda *args, **kwargs: None if not Multi_Vergleich_D_DIM_DIM else original_Deca_Comp_DIM(*args, **kwargs)
 
 # Einzel_D_DIM
 SAW_D_dim(5, 20, 1) # Bei lin_stiff > 1 passiert das gleiche wie bei lin_stiff == 1
@@ -242,7 +213,7 @@ polymer_lengths = Rnd_Pol(65, 2.5, imp_size)
 PolyCallSimple(3, "inf", "None", 400, True) # Argument vier entspricht der Anzahl an Itterationen -> dtype: int, Argument 5 fragt ob die maximalen Polymerlängen gleich oder Normalverteilt sein sollen, die drei ersten sind identisch zum Einfachen Walk
 # PolyCallSimple(D: int, pol_length, lin_stiff: float, itter: int, dist: bool)
 
-Deca_Comp_DIM(3, "inf", "None", 100, False) # Itterationen werden hier praktisch mit 10 multipliziert
+Deca_Comp_DIM() # Itterationen werden hier praktisch mit 10 multipliziert
 #Deca_Comp_DIM(D_Start: int, pol_length, lin_stiff: float, itter: int, dist: bool)
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
