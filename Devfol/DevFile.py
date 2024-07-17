@@ -109,9 +109,9 @@ def SAW_D_dim(D, pol_length, lin_stiff):
     calced_REE = np.linalg.norm(point_latest)
     # Bei Poly_Call auskommentieren der prints empfohlen.
     #print(track_list)
-    #print(calced_REE)
+    print(f"REE: {calced_REE}")
     imp_length = len(track_list)
-    #print(imp_length)
+    #print(f"Walklänge: {imp_length}")
     #print(track_list_dir)
     #print(track_list_dim)
     return calced_REE, imp_length
@@ -166,19 +166,19 @@ def PolyCallSimple(D, pol_length, lin_stiff, itter, dist):
 ######
 # Ausführen der Codes. !!! Es sollte immer nur eine Funktion gleichzeitig Ausgeführt werden!!!
 # Grundsätzlich geht auch mehrfache Ausführung aber ist hauptsächlich aufgrund von Rechenaufwand nicht empfohlen
-# Flag der auszuführenden Funktion auf False setzen
-Einzel_D_DIM = False # Muss für die Multi_Calls auf False sein
-Multi_D_DIM = False
-Multi_Vergleich_D_DIM_DIM = True
-Multi_Vergleich_D_DIM_STIFF = True
+# True = Ausführen, False = Nicht Ausführen
+Einzel_D_DIM = True # Muss für die Multi_Calls auf True sein
+Multi_D_DIM = False                  ##
+Multi_Vergleich_D_DIM_DIM = False      ## Hier nur eine der drei ausführen
+Multi_Vergleich_D_DIM_STIFF = False   ## 
 
-Einzel_Diamant = True # Gleiches wie oben
-Multi_Diamant = True
+Einzel_Diamant = False # Gleiches wie oben
+Multi_Diamant = False
 
 original_SAW_D_dim = SAW_D_dim
 original_PolyCallSimple = PolyCallSimple
-SAW_D_dim = lambda *args, **kwargs: None if Einzel_D_DIM else original_SAW_D_dim(*args, **kwargs)
-PolyCallSimple = lambda *args, **kwargs: None if Multi_D_DIM else original_PolyCallSimple(*args, **kwargs)
+SAW_D_dim = lambda *args, **kwargs: None if not Einzel_D_DIM else original_SAW_D_dim(*args, **kwargs)
+PolyCallSimple = lambda *args, **kwargs: None if not Multi_D_DIM else original_PolyCallSimple(*args, **kwargs)
 
 # Einzel_D_DIM
 SAW_D_dim(5, 20, 1)
