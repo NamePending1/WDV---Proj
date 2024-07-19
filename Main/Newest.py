@@ -29,22 +29,22 @@ def SAW_D_dim(D, pol_length, lin_stiff):
     if not (isinstance(pol_length, int) or (isinstance(pol_length, str) and pol_length == "inf")):
         print("Kein valider Input für Polymerlänge")
         # raise ValueError("Kein valider Input für Polymerlänge") # statt print und return
-        return
+        return None, None
     # Bei Unendlichem Walk in einer Dimension (ergo einer Richtung) Fehler werfen
     if D == 1 and (isinstance(pol_length, str) and pol_length == "inf"):
         print("Obacht!")
         # raise ValueError("Obacht!") # statt print und return
-        return
+        return None, None
     # Bei unendlichem Walk und 100% Stiffness
     if lin_stiff == 1 and not pol_length != "inf":
         print("REE = inf")
         # raise ValueError("Wieso?") # statt print und return
-        return
+        return None, None
     # Bei 1 Dimension und 0% Stiffness
     if D == 1 and lin_stiff == 0:
         print("Geht net")
         # raise ValueError("Geht net") # statt print und return
-        return
+        return None, None
     
 ######--------------------------------------------------------------------------------------------------######
 
@@ -116,6 +116,111 @@ def SAW_D_dim(D, pol_length, lin_stiff):
     #print(track_list_dim)
     return calced_REE, imp_length
 
+def Atom_ident(atom_coords):
+
+    var_track = 0
+
+    for i in range(3):
+        number_str = f"{atom_coords[i]:.10g}"
+            
+        if '.' in number_str:
+            number_str = number_str.rstrip('0').rstrip('.')
+    
+        sign_dig_len = len(number_str.replace('.', '').replace('-', ''))
+        var_track += sign_dig_len
+    
+    if var_track == 3: # bei drei Gitteratompunkten 3
+        #print("Gitteratom")
+        return 1
+    elif var_track == 5: # Bei drei fcc 5
+        #print("FCC-Atom")
+        return 2
+    elif var_track == 9: # Bei drei interstetiellen 9
+        #print("Interstetielles-Atom")
+        return 3
+    else:
+        print("Uhm...?")
+        return 0
+    
+def SAW_Diamonlattice(pol_length_diamond):
+    point_latest_diamond = np.array([0.0] * 3)
+    track_list_diamond = []
+    track_list_diamond.append(point_latest_diamond[:].tolist()) # Wenn direkt als Listenelement/ohne append -> Error
+    track_list_dir_diamond = []
+    steps_diamond = 0
+
+    moveset_grid = [
+        [0.25, 0.25, 0.25],
+        [-0.25, -0.25, 0.25],
+        [-0.25, 0.25, -0.25],
+        [0.25, -0.25, -0.25]
+    ]
+    moveset_fcc = [
+        [-0.25, -0.25, 0.25],
+        [0.25, 0.25, 0.25],
+        [0.25, -0.25, -0.25],
+        [-0.25, 0.25, -0.25]
+    ]
+    moveset_inter = [
+        [-0.25, -0.25, -0.25],
+        [0.25, 0.25, -0.25],
+        [0.25, -0.25, 0.25],
+        [-0.25, 0.25, 0.25]
+    ]
+
+    while True:
+
+        point_latest_diamond = track_list_diamond[-1]
+        if Atom_ident(point_latest_diamond) == 1:
+            current_moveset = moveset_grid
+        elif Atom_ident(point_latest_diamond) == 2:
+            current_moveset = moveset_fcc
+        elif Atom_ident(point_latest_diamond) == 3:
+            current_moveset = moveset_inter
+        else:
+            print("Wat?")
+            return None, None
+
+
+        # Verhindern von backtracking
+        if len(track_list_dir_diamond) >= 1:
+            last_move = np.array(track_list_dir_diamond[-1])
+            inverse_last_move = -last_move
+            available_moves = [move for move in current_moveset if not np.array_equal(move, inverse_last_move)]
+        else:
+            available_moves = current_moveset
+
+        if not available_moves:
+            break
+
+        dim_choice = random.choice(available_moves)
+        track_list_dir_diamond.append(dim_choice[:])
+        point_latest_diamond += np.array(dim_choice)
+        point_latest_diamond_list = point_latest_diamond.tolist()
+
+        # Walk abbrechen / Walkbreak
+        if point_latest_diamond_list not in track_list_diamond:
+            track_list_diamond.append(point_latest_diamond_list[:])
+        else:
+            break
+      
+        steps_diamond += 1
+        # Polymerlänge
+        if isinstance(pol_length_diamond, int) and steps_diamond >= pol_length_diamond:
+            break
+        elif isinstance(pol_length_diamond, str) and pol_length_diamond == "inf":
+            continue # Bei 'inf' wird der Walk fortgeführt bis Walkbreak
+      
+    # Für Experiment mit unterschiedlichen Nucleationsites nicht geeignet
+    calced_REE = np.linalg.norm(point_latest_diamond)
+    # Bei Poly_Call auskommentieren der prints empfohlen.
+    print(track_list_diamond)
+    print(f"REE: {calced_REE}")
+    imp_length = len(track_list_diamond)
+    print(f"Walklänge: {imp_length}")
+    print(track_list_dir_diamond)
+    return calced_REE, imp_length
+    
 # Normalverteilte Polymerlängen
 def Rnd_Pol(mean, std_dev, num):
     
@@ -166,6 +271,44 @@ def PolyCallSimple(D: int, pol_length, lin_stiff: float, itter: int, dist: bool)
     #plt.show()
 
     return ree_list, length_list
+
+def PolyCallSimpleDiamond(pol_length_diamond, itter_diamond: int, dist_diamond: bool):
+    ree_list_diamond = []
+    length_list_diamond = []
+    # Liste für tatsächliche Funktion anpassen
+    for i in range(itter_diamond):
+        if dist_diamond:
+            pol_length_diamond = polymer_lengths[i]
+        else:
+            pass
+        # Funktion callen, Fehler auslassen
+        ree, length = SAW_Diamonlattice(pol_length_diamond)
+        if ree is not None and length is not None:
+            ree_list_diamond.append(ree)
+            length_list_diamond.append(length)
+    # REE
+    mean_ree_diamond = np.mean(ree_list_diamond)
+    std_dev_ree_diamond = np.std(ree_list_diamond)
+    median_ree_diamond = np.median(ree_list_diamond)
+    # Walklänge
+    mean_length_diamond = np.mean(length_list_diamond)
+    std_dev_length_diamond = np.std(length_list_diamond)
+    median_length_diamond = np.median(length_list_diamond)
+
+    print(f"REE - Mittelwert: {mean_ree_diamond}, Standardabweichung: {std_dev_ree_diamond}, Median: {median_ree_diamond}")
+    print(f"Walklänge - Mittelwert: {mean_length_diamond}, Standardabweichung: {std_dev_length_diamond}, Median: {median_length_diamond}")
+
+    fig, axs = plt.subplots(1, 2, figsize=(14, 5))
+    axs[0].hist(ree_list_diamond, bins=10, edgecolor='black')
+    axs[0].set_xlabel('REE')
+    axs[0].set_ylabel('Anzahl')
+    axs[1].hist(length_list_diamond, bins=10, edgecolor='black')
+    axs[1].set_xlabel('Walklänge')
+    axs[1].set_ylabel('Anzahl')
+
+    plt.show()
+
+    return ree_list_diamond, length_list_diamond
 
 # Vergleich von 10 Walks in unterschiedlichen Dimensionen
 def Deca_Comp_DIM(D_Start, pol_length, lin_stiff, itter, dist):
@@ -253,15 +396,15 @@ def Hendeca_Comp_Stiff(D, pol_length, itter, dist):
 # True = Ausführen, False = Nicht Ausführen
 
 # Können/sollen auch einzeln ausgeführt werden, prints und plots müssen wieder abkommentiert werden
-Einzel_D_DIM = True # Muss für die Multi_Calls auf True sein
-Multi_D_DIM = True # Muss für Vergleiche auf True sein
+Einzel_D_DIM = False # Muss für die Multi_Calls auf True sein
+Multi_D_DIM = False # Muss für Vergleiche auf True sein
 
 Multi_Vergleich_D_DIM_DIM = False      ## 
-Multi_Vergleich_D_DIM_STIFF = True   ## Hier nur eine der zwei ausführen
+Multi_Vergleich_D_DIM_STIFF = False   ## Hier nur eine der zwei ausführen
 
 
-Einzel_Diamant = False # Gleiches wie oben
-Multi_Diamant = False
+Einzel_Diamant = True # Gleiches wie oben
+Multi_Diamant = True
 
 original_SAW_D_dim = SAW_D_dim
 original_PolyCallSimple = PolyCallSimple
@@ -271,6 +414,11 @@ SAW_D_dim = lambda *args, **kwargs: None if not Einzel_D_DIM else original_SAW_D
 PolyCallSimple = lambda *args, **kwargs: None if not Multi_D_DIM else original_PolyCallSimple(*args, **kwargs)
 Deca_Comp_DIM = lambda *args, **kwargs: None if not Multi_Vergleich_D_DIM_DIM else original_Deca_Comp_DIM(*args, **kwargs)
 Hendeca_Comp_Stiff = lambda *args, **kwargs: None if not Multi_Vergleich_D_DIM_STIFF else original_Hendeca_Comp_Stiff(*args, **kwargs)
+
+original_SAW_Diamonlattice = SAW_Diamonlattice
+original_PolyCallSimpleDiamond = PolyCallSimpleDiamond
+SAW_Diamonlattice = lambda *args, **kwargs: None if not Einzel_Diamant else original_SAW_Diamonlattice(*args, **kwargs)
+PolyCallSimpleDiamond = lambda *args, **kwargs: None if not Multi_Diamant else original_PolyCallSimpleDiamond(*args, **kwargs)
 
 ## pol_length: "inf" ## lin_stiff: "None" / polymer_lengths
 # pol_length: Unison(int, str)
@@ -295,6 +443,12 @@ Deca_Comp_DIM(3, "inf", "None", 100, False) # Itterationen werden hier praktisch
 
 Hendeca_Comp_Stiff(3, 100, 200, False)
 #Hendeca_Comp_Stiff(D: int, pol_length, itter: int, dist: bool)
+
+SAW_Diamonlattice("inf")
+#SAW_Diamonlattice(pol_length: Unison(int, str)) # str exception: "inf"
+
+PolyCallSimpleDiamond("inf", 200, False)
+# PolyCallSimpleDiamond(pol_length_diamond, itter_diamond: int, dist_diamond: bool):
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
  #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
