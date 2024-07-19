@@ -252,6 +252,7 @@ def Hendeca_Comp_Stiff(D, pol_length, itter, dist):
 # Grundsätzlich geht auch mehrfache Ausführung aber ist hauptsächlich aufgrund von Rechenaufwand nicht empfohlen
 # True = Ausführen, False = Nicht Ausführen
 
+# Können/sollen auch einzeln ausgeführt werden, prints und plots müssen wieder abkommentiert werden
 Einzel_D_DIM = True # Muss für die Multi_Calls auf True sein
 Multi_D_DIM = True # Muss für Vergleiche auf True sein
 
