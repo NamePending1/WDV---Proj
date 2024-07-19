@@ -109,6 +109,18 @@ def SAW_Diamonlattice(pol_length_diamond):
     
 SAW_Diamonlattice("inf")
 
+def Rnd_Pol(mean, std_dev, num):
+    
+    normal_floats = np.random.normal(mean, std_dev, num)
+    normal_integers = np.round(normal_floats).astype(int)
+    abs_integers = abs(normal_integers)
+    normal_integers_list = abs_integers.tolist()
+
+    return normal_integers_list
+
+imp_size = 400
+polymer_lengths = Rnd_Pol(65, 2.5, imp_size)
+
 def PolyCallSimpleDiamond(pol_length_diamond, itter_diamond: int, dist_diamond: bool):
     ree_list_diamond = []
     length_list_diamond = []
