@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 #####################################################
 #####################################################
 D = 5
-lambda_a = 2 # Bei universellem Skalar sinnlos.
 lin_stiff = 0 # 0 -> 100% Dimensionswechsel, 0.01-0.99 ->1-99% Gewichtung für Dimensionswechsel, 1 -> Computer sagt nein
 pol_length = 20
 itter = 50
@@ -396,15 +395,15 @@ def Hendeca_Comp_Stiff(D, pol_length, itter, dist):
 # True = Ausführen, False = Nicht Ausführen
 
 # Können/sollen auch einzeln ausgeführt werden, prints und plots müssen wieder abkommentiert werden
-Einzel_D_DIM = False # Muss für die Multi_Calls auf True sein
-Multi_D_DIM = False # Muss für Vergleiche auf True sein
+Einzel_D_DIM = True # Muss für die Multi_Calls auf True sein
+Multi_D_DIM = True # Muss für Vergleiche auf True sein
 
-Multi_Vergleich_D_DIM_DIM = False      ## 
+Multi_Vergleich_D_DIM_DIM = True      ## 
 Multi_Vergleich_D_DIM_STIFF = False   ## Hier nur eine der zwei ausführen
 
 
-Einzel_Diamant = True # Gleiches wie oben
-Multi_Diamant = True
+Einzel_Diamant = False # Gleiches wie oben
+Multi_Diamant = False
 
 original_SAW_D_dim = SAW_D_dim
 original_PolyCallSimple = PolyCallSimple
@@ -438,7 +437,7 @@ polymer_lengths = Rnd_Pol(65, 2.5, imp_size)
 PolyCallSimple(3, "inf", "None", 400, True) # Argument vier entspricht der Anzahl an Itterationen -> dtype: int, Argument 5 fragt ob die maximalen Polymerlängen gleich oder Normalverteilt sein sollen, die drei ersten sind identisch zum Einfachen Walk
 # PolyCallSimple(D: int, pol_length, lin_stiff: float, itter: int, dist: bool)
 
-Deca_Comp_DIM(3, "inf", "None", 100, False) # Itterationen werden hier praktisch mit 10 multipliziert
+Deca_Comp_DIM(9, "inf", "None", 100, False) # Itterationen werden hier praktisch mit 10 multipliziert
 #Deca_Comp_DIM(D_Start: int, pol_length, lin_stiff: float, itter: int, dist: bool)
 
 Hendeca_Comp_Stiff(3, 100, 200, False)
@@ -458,29 +457,23 @@ print("Code went through without error") # Bei langsamen Rechnern manchmal sinnv
 ### TODOS
 
     ### Wichtig
-
-        ##### Diamondlattice walk
-            ### 3d Diamantgitter
-            ### Mehrfaches Ausführen siehe Simple_Poly_Call
+        ### Animationsplots für erste drei Dimensionen, visualisierung des Walks. Varaible Geschwindigkeit
 
     ### Wenn Zeit
-        ### Animationsplots für erste drei Dimensionen, visualisierung des Walks
-            ### Timingvariable für Geschwindigkeit der animationen
-            ### Plot für Diamantgitter
-
-    ### Wenn sehr viel Zeit
         ### Experiment mit Unterschiedlichen Anfangspukten / mehreren "Nukleationspunkten"
         ## GUI mit html/css siehe BikePlot für Funktionsloop
-            # Auswahlmöglichkeiten zwischen: Diamantgitter und D-Dimensional sowohl für Loop als auch single
     
     ### Fertig
         ### basic SAW
         ### Simple exclusion für backwalking
         ### Inf's und D1 Fehler
-        ### Lineare Steifigkeit für Walks (Funktionsvariable)
+        ### Lineare Steife für Walks (Funktionsvariable)
         ### Loops über Funktion für Statistik
         ## Histogramme und Plots für die Statistik
         ## Warscheinlichkeitsverteilte Polymerlängen
         ##### D-Dimentional Walk
         ### Dimensionsvergleiche und Steifigkeitsverglieche bei sonst gleichen Argumenten
+        ##### Diamondlattice walk
+        ### 3d Diamantgitter
+        ### Mehrfaches Ausführen siehe Simple_Poly_Call
 
