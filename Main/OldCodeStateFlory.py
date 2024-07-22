@@ -568,6 +568,9 @@ print("Code went through without error") # Bei langsamen Rechnern manchmal sinnv
 
 ### TODOS
 
+    ### Wichtig
+        ### Flory Exponent
+
     ### Wenn Zeit
         ### Animationsplot
         ### Experiment mit Unterschiedlichen Anfangspukten / mehreren "Nukleationspunkten"
@@ -587,5 +590,4 @@ print("Code went through without error") # Bei langsamen Rechnern manchmal sinnv
         ### 3d Diamantgitter
         ### Mehrfaches Ausführen siehe Simple_Poly_Call
         ### Einfache Plots
-        ### Flory Exponent
 
