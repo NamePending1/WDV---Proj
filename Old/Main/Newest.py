@@ -470,8 +470,8 @@ def Flory_Diamond(pol_length_diamond, itter_diamond: int, dist_diamond: bool):
 # True = Ausführen, False = Nicht Ausführen
 
 # Können/sollen auch einzeln ausgeführt werden, prints und plots müssen wieder abkommentiert werden
-Einzel_D_DIM = False # Muss für die Multi_Calls auf True sein, Muss fürs Visualisieren auf true sein, Muss für Exponent auf true sein
-Multi_D_DIM = False # Muss für Vergleiche auf True sein, Muss für Exponent auf true sein
+Einzel_D_DIM = True # Muss für die Multi_Calls auf True sein, Muss fürs Visualisieren auf true sein, Muss für Exponent auf true sein
+Multi_D_DIM = True # Muss für Vergleiche auf True sein, Muss für Exponent auf true sein
 
 Multi_Vergleich_D_DIM_DIM = False      ## 
 Multi_Vergleich_D_DIM_STIFF = False   ## Hier nur eine der zwei ausführen
@@ -484,7 +484,7 @@ Visualize_2D = False
 Visualize_3D = False
 Visualize_Diamond = False
 
-Calc_Flory_D_DIM = False
+Calc_Flory_D_DIM = True
 Calc_Flory_Diamond = False
 
 original_SAW_D_dim = SAW_D_dim
@@ -558,7 +558,7 @@ Visualize_Diamondlattice_Walk_3D("inf")
 # Visualize_Diamondlattice_Walk_3D(pol_length: (int, str))
 
 # Kalkuliert den Flory-Exponent
-Flory_D_DIM(4, "inf", 0.34, 100, False)
+Flory_D_DIM(5, "inf", 0.85, 100, False)
 Flory_Diamond("inf", 1000, False)
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
