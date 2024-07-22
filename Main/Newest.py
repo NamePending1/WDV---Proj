@@ -2,6 +2,7 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import math
 
 
 # Eingabe unnütz für eigentliches Ausführen des Codes, nur zum testen/troubleshooten da
@@ -397,8 +398,8 @@ def Visualize_Walk_2D(pol_length_diamond, lin_stiff):
     
     #ax.set_xlim([-2, 2])
     #ax.set_ylim([-2, 2])
-    ax.set_xlabel('X-Axe')
-    ax.set_ylabel('Y-Axe')
+    ax.set_xlabel('X-Achse')
+    ax.set_ylabel('Y-Achse')
 
     plt.show()
 
@@ -415,9 +416,9 @@ def Visualize_Walk_3D(pol_length_diamond, lin_stiff):
     #ax.set_xlim([-2, 2])
     #ax.set_ylim([-2, 2])
     #ax.set_zlim([-2, 2])
-    ax.set_xlabel('X-Axe')
-    ax.set_ylabel('Y-Axe')
-    ax.set_zlabel('Z-Axe')
+    ax.set_xlabel('X-Achse')
+    ax.set_ylabel('Y-Achse')
+    ax.set_zlabel('Z-Achse')
 
     plt.show()
 
@@ -434,11 +435,31 @@ def Visualize_Diamondlattice_Walk_3D(pol_length_diamond):
     #ax.set_xlim([0, 1])
     #ax.set_ylim([0, 1])
     #ax.set_zlim([0, 1])
-    ax.set_xlabel('X-Axe')
-    ax.set_ylabel('Y-Axe')
-    ax.set_zlabel('Z-Axe')
+    ax.set_xlabel('X-Achse')
+    ax.set_ylabel('Y-Achse')
+    ax.set_zlabel('Z-Achse')
 
     plt.show()
+
+def Flory_D_DIM(D: int, pol_length, lin_stiff: float, itter: int, dist: bool):
+    ree_list, length_list = PolyCallSimple(D, pol_length, lin_stiff, itter, dist)
+    mean_ree = np.mean(ree_list)
+    median_ree = np.median(ree_list)
+    mean_length = np.mean(length_list)
+    median_length = np.median(length_list)
+    log_flory_1_D = math.log(mean_ree) / math.log(mean_length)
+    log_flory_2_D = math.log(median_ree) / math.log(median_length)
+    print(f"Mittlerer Exponent: {log_flory_1_D}, Medianexponent: {log_flory_2_D}")
+
+def Flory_Diamond(pol_length_diamond, itter_diamond: int, dist_diamond: bool):
+    ree_list_diamond, length_list_diamond = PolyCallSimpleDiamond(pol_length_diamond, itter_diamond, dist_diamond)
+    mean_ree_diamond = np.mean(ree_list_diamond)
+    median_ree_diamond = np.median(ree_list_diamond)
+    mean_length_diamond = np.mean(length_list_diamond)
+    median_length_diamond = np.median(length_list_diamond)
+    log_flory_1_Diamond = math.log(mean_ree_diamond) / math.log(mean_length_diamond)
+    log_flory_2_Diamond = math.log(median_ree_diamond) / math.log(median_length_diamond)
+    print(f"Mittlerer Exponent: {log_flory_1_Diamond}, Medianexponent: {log_flory_2_Diamond}")
 
 # Manuelles Callen der Funktionen
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
@@ -449,19 +470,22 @@ def Visualize_Diamondlattice_Walk_3D(pol_length_diamond):
 # True = Ausführen, False = Nicht Ausführen
 
 # Können/sollen auch einzeln ausgeführt werden, prints und plots müssen wieder abkommentiert werden
-Einzel_D_DIM = True # Muss für die Multi_Calls auf True sein, Muss fürs Visualisieren auf true sein
-Multi_D_DIM = False # Muss für Vergleiche auf True sein
+Einzel_D_DIM = True # Muss für die Multi_Calls auf True sein, Muss fürs Visualisieren auf true sein, Muss für Exponent auf true sein
+Multi_D_DIM = True # Muss für Vergleiche auf True sein, Muss für Exponent auf true sein
 
 Multi_Vergleich_D_DIM_DIM = False      ## 
 Multi_Vergleich_D_DIM_STIFF = False   ## Hier nur eine der zwei ausführen
 
 
-Einzel_Diamant = False # Muss für die Multi_Calls auf True sein, Muss fürs Visualisieren auf true sein
-Multi_Diamant = False
+Einzel_Diamant = False # Muss für die Multi_Calls auf True sein, Muss fürs Visualisieren auf true sein, Muss für Exponent auf true sein
+Multi_Diamant = False # Muss für Exponent auf true sein
 
 Visualize_2D = False
-Visualize_3D = True
+Visualize_3D = False
 Visualize_Diamond = False
+
+Calc_Flory_D_DIM = True
+Calc_Flory_Diamond = False
 
 original_SAW_D_dim = SAW_D_dim
 original_PolyCallSimple = PolyCallSimple
@@ -483,6 +507,11 @@ original_Visualize_Diamondlattice_Walk_3D = Visualize_Diamondlattice_Walk_3D
 Visualize_Walk_2D = lambda *args, **kwargs: None if not Visualize_2D else original_Visualize_Walk_2D(*args, **kwargs)
 Visualize_Walk_3D = lambda *args, **kwargs: None if not Visualize_3D else original_Visualize_Walk_3D(*args, **kwargs)
 Visualize_Diamondlattice_Walk_3D = lambda *args, **kwargs: None if not Visualize_Diamond else original_Visualize_Diamondlattice_Walk_3D(*args, **kwargs)
+
+original_Flory_D_DIM = Flory_D_DIM
+original_Flory_Diamond = Flory_Diamond
+Flory_D_DIM = lambda *args, **kwargs: None if not Calc_Flory_D_DIM else original_Flory_D_DIM(*args, **kwargs)
+Flory_Diamond = lambda *args, **kwargs: None if not Calc_Flory_Diamond else original_Flory_Diamond(*args, **kwargs)
 
 ## pol_length: "inf" ## lin_stiff: "None" / polymer_lengths
 # pol_length: Unison(int, str)
@@ -528,6 +557,10 @@ Visualize_Walk_3D("inf", "None")
 Visualize_Diamondlattice_Walk_3D("inf")
 # Visualize_Diamondlattice_Walk_3D(pol_length: (int, str))
 
+# Kalkuliert den Flory-Exponent
+Flory_D_DIM(4, "inf", 0.34, 100, False)
+Flory_Diamond("inf", 1000, False)
+
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
  #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
@@ -536,9 +569,10 @@ print("Code went through without error") # Bei langsamen Rechnern manchmal sinnv
 ### TODOS
 
     ### Wichtig
-        ### Animationsplots für erste drei Dimensionen, visualisierung des Walks. Varaible Geschwindigkeit
+        ### Flory Exponent
 
     ### Wenn Zeit
+        ### Animationsplot
         ### Experiment mit Unterschiedlichen Anfangspukten / mehreren "Nukleationspunkten"
         ## GUI mit html/css siehe BikePlot für Funktionsloop
     
@@ -555,4 +589,5 @@ print("Code went through without error") # Bei langsamen Rechnern manchmal sinnv
         ##### Diamondlattice walk
         ### 3d Diamantgitter
         ### Mehrfaches Ausführen siehe Simple_Poly_Call
+        ### Einfache Plots
 
