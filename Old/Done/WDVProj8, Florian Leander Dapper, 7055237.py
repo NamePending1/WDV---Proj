@@ -461,13 +461,15 @@ def Flory_D_DIM(D: int, pol_length, lin_stiff: float, itter: int, dist: bool):
     print(f"Mittlerer Exponent: {log_flory_1_D}, Medianexponent: {log_flory_2_D}")
 
 def Flory_Diamond(pol_length_diamond, itter_diamond: int, dist_diamond: bool):
+    skalar_diamond = 2.309 # Skalar um für die kurze Schrittlänge gegenüber der Schrittlänge im D-Dimensionalen zu kompensieren //Betrag D-Dimensionaler Schritt: 1, Betrag Diamantschritt etwa= 0.4
+    # Nicht Optimal, alle REE Werte sollten eig multipliziert werden
     ree_list_diamond, length_list_diamond = PolyCallSimpleDiamond(pol_length_diamond, itter_diamond, dist_diamond)
     mean_ree_diamond = np.mean(ree_list_diamond)
     median_ree_diamond = np.median(ree_list_diamond)
     mean_length_diamond = np.mean(length_list_diamond)
     median_length_diamond = np.median(length_list_diamond)
-    log_flory_1_Diamond = math.log(mean_ree_diamond) / math.log(mean_length_diamond)
-    log_flory_2_Diamond = math.log(median_ree_diamond) / math.log(median_length_diamond)
+    log_flory_1_Diamond = math.log(skalar_diamond * mean_ree_diamond) / math.log(mean_length_diamond)
+    log_flory_2_Diamond = math.log(skalar_diamond * median_ree_diamond) / math.log(median_length_diamond)
     print(f"Mittlerer Exponent: {log_flory_1_Diamond}, Medianexponent: {log_flory_2_Diamond}")
 
 # Manuelles Callen der Funktionen
@@ -486,12 +488,12 @@ Multi_Vergleich_D_DIM_DIM = False      ##
 Multi_Vergleich_D_DIM_STIFF = False   ## Hier nur eine der zwei ausführen
 
 
-Einzel_Diamant = False # Muss für die Multi_Calls auf True sein, Muss fürs Visualisieren auf true sein, Muss für Exponent auf true sein
+Einzel_Diamant = True # Muss für die Multi_Calls auf True sein, Muss fürs Visualisieren auf true sein, Muss für Exponent auf true sein
 Multi_Diamant = False # Muss für Exponent auf true sein
 
 Visualize_2D = False
 Visualize_3D = False
-Visualize_Diamond = False
+Visualize_Diamond = True
 
 Calc_Flory_D_DIM = False
 Calc_Flory_Diamond = False
