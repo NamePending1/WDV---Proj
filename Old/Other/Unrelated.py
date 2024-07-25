@@ -453,7 +453,7 @@ def Visualize_Diamondlattice_Walk_3D(pol_length_diamond):
         ax = fig.add_subplot(111, projection="3d")
     
         # Plot lattice points
-        ax.scatter(points[:, 0], points[:, 1], points[:, 2], s=20, c="b")
+        ax.scatter(points[:, 0], points[:, 1], points[:, 2], color="blue")
     
         # Connect each point to its 4 nearest neighbors
         for point in points:
